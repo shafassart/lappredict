@@ -221,7 +221,7 @@ function getPriceRangeForNovice(usageType, budget, intensity) {
       high: { min: 25000000, max: 40000000 },
       premium: { min: 40000000, max: 60000000 },
     },
-    office: {
+    work: {
       low: { min: 7000000, max: 10000000 },
       medium: { min: 10000000, max: 15000000 },
       high: { min: 15000000, max: 25000000 },
