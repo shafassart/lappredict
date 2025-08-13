@@ -148,7 +148,7 @@ function generateSpecSummary(data, isNovice) {
       { label: "Intensitas", value: intensity[data.intensity] || "N/A" },
       {
         label: "Preferensi Merek",
-        value: data.brandNovice || "Tidak ada preferensi",
+        value: data.brand || "Tidak ada preferensi",
       },
       {
         label: "Ukuran Layar",
