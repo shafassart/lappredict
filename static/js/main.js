@@ -124,7 +124,7 @@ function generateSpecSummary(data, isNovice) {
     // Nama kategori sesuai HTML
     const usageType = {
       daily: "Sehari-hari",
-      gaming: "Gaming",
+      gaming: "Bermain Game",
       design: "Desain Grafis",
       work: "Perkantoran",
     };
@@ -178,13 +178,16 @@ function generateSpecSummary(data, isNovice) {
     const summaryItems = [
       { label: "Prosessor", value: `${data.prosessor}` },
       { label: "RAM", value: `${data.ram} GB` },
-      { label: "HHD", value: `${data.hdd} GB` },
+      { label: "HDD", value: `${data.hdd} GB` },
       { label: "SSD", value: `${data.ssd} GB` },
       { label: "IPS", value: `${data.ips} ` },
       { label: "GPU", value: `${data.kartu_grafis}` },
       { label: "Ukuran Layar", value: `${data.ukuran_layar}"` },
       { label: "Resolusi", value: data.resolution },
-      { label: "Merek", value: data.brandexpert || "No preference" },
+      {
+        label: "Merek/Brand",
+        value: data.brandexpert || "Tidak Ada Preferensi",
+      },
       { label: "Berat", value: `${data.weight} kg` },
       { label: "PPI", value: `${data.ppi}` },
       { label: "Layar sentuh", value: `${data.touchscreen}` },
