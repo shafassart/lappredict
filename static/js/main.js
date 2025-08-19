@@ -108,6 +108,18 @@ function submitExpertForm() {
     }
   }
 
+  const ppi = parseFloat(data.ppi);
+  if (isNaN(ppi) || ppi < 200 || ppi > 400) {
+    alert("PPI harus di antara 200 – 400!");
+    return;
+  }
+
+  const weight = parseFloat(data.weight);
+  if (isNaN(weight) || weight < 1 || weight > 5) {
+    alert("Berat laptop harus di antara 1 – 5 Kg!");
+    return;
+  }
+
   // memastikan nilai numeric tidak kosong
   data.ppi = data.ppi || "0";
   data.touchscreen = data.touchscreen || "0";
