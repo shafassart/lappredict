@@ -1,4 +1,4 @@
-// Store user selections
+// variable tipe user dan kategori
 let userType = "";
 let usageType = "";
 
@@ -23,7 +23,7 @@ function selectUserType(type) {
   }
 }
 
-// Back buttons
+// tombol kembali
 function backToUserType() {
   hideAllSections();
   document.getElementById("userTypeSelection").classList.remove("hidden");
@@ -34,7 +34,7 @@ function backToUsageType() {
   document.getElementById("noviceUsageType").classList.remove("hidden");
 }
 
-// Usage type selection for novice users
+// kategori pengguna awam
 function selectUsageType(type) {
   usageType = type;
   document.getElementById("usageType").value = type;
@@ -56,19 +56,6 @@ function selectUsageType(type) {
 }
 
 // Form submission handlers
-// function submitNoviceForm() {
-//   // Get form data
-//   const formData = new FormData(document.getElementById("noviceForm"));
-//   const data = Object.fromEntries(formData.entries());
-
-//   // Generate specification summary
-//   generateSpecSummary(data, true);
-
-//   // Show results
-//   hideAllSections();
-//   document.getElementById("resultsContainer").classList.remove("hidden");
-// }
-
 function submitNoviceForm() {
   console.log("Fungsi kepanggil"); // cek apakah tombol nyambung ke fungsi
 
@@ -121,7 +108,7 @@ function submitExpertForm() {
     }
   }
 
-  // Pastikan nilai numeric tidak kosong
+  // memastikan nilai numeric tidak kosong
   data.ppi = data.ppi || "0";
   data.touchscreen = data.touchscreen || "0";
   data.weight = data.weight || "0";
@@ -138,7 +125,6 @@ function submitExpertForm() {
         return;
       }
 
-      // Update price prediction result
       // Update harga dari backend
       document.getElementById("pricePrediction").innerHTML = `
         <p class="text-3xl font-bold text-blue-600">
@@ -162,13 +148,13 @@ function submitExpertForm() {
     });
 }
 
-// // Generate specification summary for results
+// ringkasan spesifikasi
 function generateSpecSummary(data, isNovice) {
   const specSummary = document.getElementById("specSummary");
   specSummary.innerHTML = "";
 
   if (isNovice) {
-    // Nama kategori sesuai HTML
+    // Nama kategori
     const usageType = {
       daily: "Sehari-hari",
       gaming: "Bermain Game",
@@ -176,6 +162,7 @@ function generateSpecSummary(data, isNovice) {
       work: "Perkantoran",
     };
 
+    // budget
     const budget = {
       low: "Rp 5-10 juta (Entry Level)",
       medium: "Rp 10-20 juta (Mid Range)",
@@ -183,12 +170,14 @@ function generateSpecSummary(data, isNovice) {
       premium: "Rp 30+ juta (Premium)",
     };
 
+    // intensitas
     const intensity = {
       light: "Ringan",
       moderate: "Sedang",
       heavy: "Berat",
     };
 
+    // ringkasan spesifikasi awam
     const summaryItems = [
       { label: "Kategori", value: usageType[data.usageType] || "N/A" },
       { label: "Budget", value: budget[data.budget] || "N/A" },
@@ -212,7 +201,7 @@ function generateSpecSummary(data, isNovice) {
       `;
     });
 
-    // Set harga berdasarkan logika baru
+    // Set harga pengguna awam
     const pricePrediction = document.getElementById("pricePrediction");
     pricePrediction.innerHTML = `
       <p class="text-3xl font-bold text-blue-600">
@@ -221,7 +210,7 @@ function generateSpecSummary(data, isNovice) {
       <p class="text-gray-600 mt-2">Rentang harga laptop yang sesuai kebutuhan Anda adalah</p>
     `;
   } else {
-    // Expert user summary
+    // Expert user
     const summaryItems = [
       { label: "Prosessor", value: `${data.prosessor}` },
       { label: "RAM", value: `${data.ram} GB` },
@@ -251,6 +240,7 @@ function generateSpecSummary(data, isNovice) {
   }
 }
 
+// set harga pengguna awam berdasarkan dataset
 function getPriceRangeForNovice(usageType, budget, intensity) {
   const priceRanges = {
     daily: {
@@ -292,7 +282,7 @@ function getPriceRangeForNovice(usageType, budget, intensity) {
   let minPrice = Math.floor(range.min * factor);
   let maxPrice = Math.floor(range.max * factor);
 
-  // 🔒 Pastikan tidak keluar dari range aslinya
+  //Memastikan tidak keluar dari range aslinya
   if (minPrice < range.min) minPrice = range.min;
   if (maxPrice > range.max) maxPrice = range.max;
 
