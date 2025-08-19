@@ -56,15 +56,43 @@ function selectUsageType(type) {
 }
 
 // Form submission handlers
+// function submitNoviceForm() {
+//   // Get form data
+//   const formData = new FormData(document.getElementById("noviceForm"));
+//   const data = Object.fromEntries(formData.entries());
+
+//   // Generate specification summary
+//   generateSpecSummary(data, true);
+
+//   // Show results
+//   hideAllSections();
+//   document.getElementById("resultsContainer").classList.remove("hidden");
+// }
+
 function submitNoviceForm() {
-  // Get form data
-  const formData = new FormData(document.getElementById("noviceForm"));
-  const data = Object.fromEntries(formData.entries());
+  console.log("Fungsi kepanggil"); // cek apakah tombol nyambung ke fungsi
 
-  // Generate specification summary
+  const form = document.getElementById("noviceForm");
+  if (!form) {
+    console.error("noviceForm tidak ditemukan");
+    return;
+  }
+
+  const data = Object.fromEntries(new FormData(form).entries());
+  console.log("Data form:", data);
+
+  if (!data.intensity) {
+    alert("Harap pilih intensitas penggunaan anda!");
+    return;
+  }
+  if (!data.budget) {
+    alert("Harap pilih budget Anda!");
+    return;
+  }
+
+  console.log("Validasi lolos, lanjut ke generateSpecSummary");
+
   generateSpecSummary(data, true);
-
-  // Show results
   hideAllSections();
   document.getElementById("resultsContainer").classList.remove("hidden");
 }
@@ -73,6 +101,25 @@ function submitNoviceForm() {
 function submitExpertForm() {
   const formData = new FormData(document.getElementById("expertForm"));
   const data = Object.fromEntries(formData.entries());
+
+  const required = {
+    prosessor: "Harap pilih prosessor!",
+    ram: "Harap pilih kapasitas RAM!",
+    hdd: "Harap pilih kapasitas HDD!",
+    ssd: "Harap pilih kapasitas SSD!",
+    ips: "Harap tentukan apakah menggunakan panel IPS!",
+    kartu_grafis: "Harap pilih kartu grafis (GPU)!",
+    resolution: "Harap pilih resolusi layar!",
+    weight: "Harap masukkan berat laptop!",
+    ppi: "Harap masukkan nilai PPI layar!",
+  };
+
+  for (const key in required) {
+    if (!data[key]) {
+      alert(required[key]);
+      return;
+    }
+  }
 
   // Pastikan nilai numeric tidak kosong
   data.ppi = data.ppi || "0";
@@ -130,10 +177,10 @@ function generateSpecSummary(data, isNovice) {
     };
 
     const budget = {
-      low: "Entry Level (Rp 5-10 juta)",
-      medium: "Mid Range (Rp 10-20 juta)",
-      high: "High End (Rp 20-30 juta)",
-      premium: "Premium (Rp 30+ juta)",
+      low: "Rp 5-10 juta (Entry Level)",
+      medium: "Rp 10-20 juta (Mid Range)",
+      high: "Rp 20-30 juta (High End)",
+      premium: "Rp 30+ juta (Premium)",
     };
 
     const intensity = {
@@ -171,7 +218,7 @@ function generateSpecSummary(data, isNovice) {
       <p class="text-3xl font-bold text-blue-600">
         ${getPriceRangeForNovice(data.usageType, data.budget, data.intensity)}
       </p>
-      <p class="text-gray-600 mt-2">Berdasarkan rekomendasi model</p>
+      <p class="text-gray-600 mt-2">Rentang harga laptop yang sesuai kebutuhan Anda adalah</p>
     `;
   } else {
     // Expert user summary
@@ -207,43 +254,47 @@ function generateSpecSummary(data, isNovice) {
 function getPriceRangeForNovice(usageType, budget, intensity) {
   const priceRanges = {
     daily: {
-      low: { min: 5000000, max: 8000000 },
-      medium: { min: 8000000, max: 12000000 },
-      high: { min: 12000000, max: 18000000 },
-      premium: { min: 18000000, max: 25000000 },
+      low: { min: 5004000, max: 9954000 },
+      medium: { min: 10032660, max: 19890000 },
+      high: { min: 20105820, max: 29700000 },
+      premium: { min: 30042000, max: 55800000 },
     },
     gaming: {
-      low: { min: 8000000, max: 12000000 },
-      medium: { min: 12000000, max: 20000000 },
-      high: { min: 20000000, max: 30000000 },
-      premium: { min: 30000000, max: 50000000 },
+      low: { min: 5003820, max: 9899820 },
+      medium: { min: 10170000, max: 19962000 },
+      high: { min: 20088360, max: 29790000 },
+      premium: { min: 30222000, max: 109782000 },
     },
     design: {
       low: { min: 10000000, max: 15000000 },
       medium: { min: 15000000, max: 25000000 },
-      high: { min: 25000000, max: 40000000 },
+      high: { min: 20772000, max: 28098000 },
       premium: { min: 40000000, max: 60000000 },
     },
     work: {
-      low: { min: 7000000, max: 10000000 },
-      medium: { min: 10000000, max: 15000000 },
-      high: { min: 15000000, max: 25000000 },
-      premium: { min: 25000000, max: 40000000 },
+      low: { min: 8262000, max: 9882000 },
+      medium: { min: 10152000, max: 19782000 },
+      high: { min: 20124000, max: 27882000 },
+      premium: { min: 31752000, max: 44010000 },
     },
   };
 
   const intensityFactors = {
-    light: 0.9,
+    light: 0.95,
     moderate: 1.0,
-    heavy: 1.1,
+    heavy: 1.05,
   };
 
   const range = priceRanges[usageType]?.[budget];
   if (!range) return "Rp -";
 
   const factor = intensityFactors[intensity] || 1.0;
-  const minPrice = Math.floor(range.min * factor);
-  const maxPrice = Math.floor(range.max * factor);
+  let minPrice = Math.floor(range.min * factor);
+  let maxPrice = Math.floor(range.max * factor);
+
+  // 🔒 Pastikan tidak keluar dari range aslinya
+  if (minPrice < range.min) minPrice = range.min;
+  if (maxPrice > range.max) maxPrice = range.max;
 
   return `Rp${minPrice.toLocaleString()} - Rp${maxPrice.toLocaleString()}`;
 }
